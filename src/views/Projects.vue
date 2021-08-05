@@ -1,17 +1,18 @@
 <template>
-  <div class="home">
-    <LoginForm/>
+  <div>
+    Hello
+    <Issue/>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import LoginForm from '@/components/LoginForm.vue'
+import Issue from '@/components/Issue.vue';
 
 @Options({
   components: {
-    LoginForm
+    Issue
   },
 })
-export default class Home extends Vue {}
+export default class Projects extends Vue {}
 </script>

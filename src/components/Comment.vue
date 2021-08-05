@@ -30,5 +30,6 @@ export default class Comment extends Vue {
     text-align: left;
     border: 1px solid black;
     border-radius: 3px;
+    margin: 3px;
   }
 </style>
