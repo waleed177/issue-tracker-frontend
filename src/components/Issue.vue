@@ -4,9 +4,8 @@
       {{issue.author}}
     </span>
     <span class="title">
-      {{issue.title}}
+      <router-link :to="'/issues/' + issue.id">{{issue.title}}</router-link> 
     </span>
-    <router-link :to="'/issues/' + issue.id">Home</router-link> 
   </div>
 </template>
 

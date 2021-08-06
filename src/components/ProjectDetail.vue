@@ -1,6 +1,7 @@
 <template>
   <div>
-    Project
+    Issues:
+    <IssueForm :project-id="projectId"/>
     <Issue v-for="issue in issues" :key="issue" :issue="issue"/>
   </div>
 </template>
@@ -8,11 +9,13 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import Issue from '@/components/Issue.vue';
+import IssueForm from '@/components/IssueForm.vue';
 import { axios } from '@/globals/globals';
 
 @Options({
   components: {
-    Issue
+    Issue,
+    IssueForm
   },
   props: {
     projectId: Number

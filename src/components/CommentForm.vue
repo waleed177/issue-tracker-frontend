@@ -1,12 +1,11 @@
 <template>
   <div class="card">
     <div>
-      <input class="comment" type="text" v-model="comment"/>
+      <textarea class="comment" v-model="comment"/>
     </div>
-    <div>
-      <input type="submit" value="submit" v-on:click="sendComment"/>
+    <div v-if="!noSubmit">
+      <input type="submit" value="submit" v-on:click="submit()"/>
     </div>
- 
   </div>
 </template>
 
@@ -16,7 +15,8 @@ import { axios, set_token } from "@/globals/globals";
 
 @Options({
   props: {
-    issueId: Number
+    issueId: Number,
+    noSubmit: Boolean
   },
   data() {
     return {
@@ -28,12 +28,13 @@ import { axios, set_token } from "@/globals/globals";
 export default class CommentForm extends Vue {
   comment!: string;
   issueId!: number;
+  noSubmit!: boolean;
 
-  public async sendComment() {
-    console.log(this.issueId);
-    let res = await axios.post("http://127.0.0.1:8000/tracker/comments/?issue=" + this.issueId, {
+  public async submit(issueId: number | null = null) {
+    let id: number = issueId == null ? this.issueId : issueId;
+    let res = await axios.post("http://127.0.0.1:8000/tracker/comments/?issue=" + id, {
         "body": this.comment,
-        "issue": this.issueId
+        "issue": id
     });
     this.comment = "";
     this.$emit("submit");
@@ -51,5 +52,6 @@ export default class CommentForm extends Vue {
 
   .comment {
     width: 100%;
+    resize: vertical;
   }
 </style>
