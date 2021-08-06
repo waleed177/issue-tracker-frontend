@@ -1,53 +1,27 @@
 <template>
   <div class="card">
     <span class="author">
-      {{author}}
+      {{issue.author}}
     </span>
     <span class="title">
-      {{title}}
+      {{issue.title}}
     </span>
-
-    <comment v-for="comment in comments" :key="comment.id" author="waw" :content="comment.body"/>
-
-    <comment-form v-on:submit="onCommentSubmit"/>
+    <router-link :to="'/issues/' + issue.id">Home</router-link> 
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import Comment from '@/components/Comment.vue';
-import CommentForm from '@/components/CommentForm.vue';
-import { axios, set_token } from "@/globals/globals";
+import { axios } from "@/globals/globals";
 
 @Options({
   props: {
-    issue_id: Number
+    issue: Object
   },
-  components: {
-    Comment,
-    CommentForm
-  },
-  data() {
-    return {
-      comments: []
-    }
-  }
+  components: {}
 })
-export default class Issue extends Vue {
-  comments!: [];
-
-  async getComments() {
-    let res = await axios.get("http://127.0.0.1:8000/tracker/comments/?issue=2");
-    this.comments = res.data;
-  }
-
-  async mounted() {
-    await this.getComments();
-  }
-
-  async onCommentSubmit() {
-    await this.getComments();
-  }
+export default class IssueDetail extends Vue {
+  issue: any;
 }
 </script>
 

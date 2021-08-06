@@ -6,6 +6,7 @@
     <div>
       <input type="submit" value="submit" v-on:click="sendComment"/>
     </div>
+ 
   </div>
 </template>
 
@@ -14,7 +15,9 @@ import { Options, Vue } from 'vue-class-component';
 import { axios, set_token } from "@/globals/globals";
 
 @Options({
-  props: {},
+  props: {
+    issueId: Number
+  },
   data() {
     return {
       comment: ""
@@ -24,12 +27,15 @@ import { axios, set_token } from "@/globals/globals";
 })
 export default class CommentForm extends Vue {
   comment!: string;
+  issueId!: number;
 
   public async sendComment() {
-    let res = await axios.post("http://127.0.0.1:8000/tracker/comments/?issue=2", {
+    console.log(this.issueId);
+    let res = await axios.post("http://127.0.0.1:8000/tracker/comments/?issue=" + this.issueId, {
         "body": this.comment,
-        "issue": 2
+        "issue": this.issueId
     });
+    this.comment = "";
     this.$emit("submit");
   }
 }

@@ -1,10 +1,10 @@
 <template>
   <div class="card">
     <div class="author">
-      {{author}}
+      {{commentData.author}}
     </div>
     <div class="content">
-      {{content}}
+      {{commentData.body}}
     </div>
   </div>
 </template>
@@ -14,14 +14,11 @@ import { Options, Vue } from 'vue-class-component';
 
 @Options({
   props: {
-    author: String,
-    content: String
+    commentData: Object
   }
 })
 export default class Comment extends Vue {
-  msg!: string;
-  content!: string;
-
+  commentData!: unknown
 }
 </script>
 
