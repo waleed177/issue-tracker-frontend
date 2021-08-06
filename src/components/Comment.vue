@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="author">
-      {{commentData.author}}
+      {{commentData.author.username}}
     </div>
     <div class="content">
       {{commentData.body}}

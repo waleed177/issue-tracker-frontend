@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <span class="author">
-      {{issue.author}}
+      {{issue.author.username}}: 
     </span>
     <span class="title">
       <router-link :to="'/issues/' + issue.id">{{issue.title}}</router-link> 
