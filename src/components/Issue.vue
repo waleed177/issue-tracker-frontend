@@ -1,11 +1,11 @@
 <template>
-  <div class="card">
-    <span class="author">
-      {{issue.author.username}}: 
-    </span>
-    <span class="title">
+  <div class="card my-3">
+    <div class="card-header">
       <router-link :to="'/issues/' + issue.id">{{issue.title}}</router-link> 
-    </span>
+    </div>
+    <div class="card-body text-muted py-0">
+      opened by {{issue.author.username}}.
+    </div>
   </div>
 </template>
 
@@ -25,11 +25,6 @@ export default class IssueDetail extends Vue {
 </script>
 
 <style scoped>
-  .card {
-    text-align: left;
-    border: 1px solid black;
-    border-radius: 3px;
-    padding: 3px;
-  }
+
   
 </style>

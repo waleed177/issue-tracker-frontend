@@ -1,12 +1,15 @@
 <template>
-  <div>
-    <div>
-      Issues:
-      <IssueForm :project-id="projectId"/>
-      <Issue v-for="issue in issues" :key="issue" :issue="issue"/>
+  <div class="card">
+    <div class="card-header">
+      Issues
+      <router-link class="float-right" :to="'/new_issue/' + this.projectId">
+        <button class="btn btn-outline-secondary">
+          New Issue
+        </button>
+      </router-link>
     </div>
-    <div>
-      
+    <div class="card-body">
+      <Issue v-for="issue in issues" :key="issue" :issue="issue"/>
     </div>
   </div>
 </template>
@@ -14,13 +17,11 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import Issue from '@/components/Issue.vue';
-import IssueForm from '@/components/IssueForm.vue';
 import { axios } from '@/globals/globals';
 
 @Options({
   components: {
     Issue,
-    IssueForm,
   },
   props: {
     projectId: Number

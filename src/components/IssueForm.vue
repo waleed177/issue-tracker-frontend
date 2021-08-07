@@ -1,14 +1,12 @@
 <template>
   <div class="card">
-    <div>
-      Title: <input class="title" type="text" v-model="title"/>
+    <div class="card-header">
+      Title: <input class="w-100 d-inline" type="text" v-model="title"/>
     </div>
-    Comment:
-    <CommentForm ref="comment_form" :issue-id="issueId" no-submit="true"/>
-    <div>
-      <input type="submit" value="submit" v-on:click="submit"/>
+    <div class="card-body">
+      <CommentForm ref="comment_form" :issue-id="issueId" :no-card="true" no-submit="true"/>
+      <input class="btn btn-outline-primary mt-2 float-right" type="submit" value="submit" v-on:click="submit"/>
     </div>
- 
   </div>
 </template>
 
@@ -38,8 +36,6 @@ export default class IssueForm extends Vue {
   projectId!: number;
 
   public async submit() {
-    console.log(this.title);
-    console.log(this.projectId);
     let res = await axios.post("http://127.0.0.1:8000/tracker/issues/?project=" + this.projectId, {
         "title": this.title,
         "project": this.projectId
@@ -52,14 +48,5 @@ export default class IssueForm extends Vue {
 </script>
 
 <style scoped>
-  .card {
-    text-align: left;
-    border: 1px solid black;
-    border-radius: 3px;
-    margin: 3px;
-  }
-  
-  .comment {
-    width: 100%;
-  }
+
 </style>

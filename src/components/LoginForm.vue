@@ -1,13 +1,16 @@
 <template>
   <div class="card">
-    <div>
-      Username: <input class="form-control" type="text" v-model="username"/>
+    <div class="card-header">
+      Login
     </div>
-    <div>
-      Password: <input class="form-control" type="password" v-model="password"/>
-    </div>
-    <div>
-      <input type="submit" value="Login" v-on:click="login"/>
+    <div class="card-body">
+      <div>
+        Username: <input class="form-control" type="text" v-model="username"/>
+      </div>
+      <div>
+        Password: <input class="form-control" type="password" v-model="password"/>
+      </div>
+      <input class="btn btn-outline-primary float-right mt-2" type="submit" value="Login" v-on:click="login"/>
     </div>
   </div>
 </template>
@@ -43,7 +46,7 @@ export default class CommentForm extends Vue {
       console.log("Login success!");
 
       router.push({
-        name: "projects"
+        name: "home"
       })
     } catch (error) {
       console.log("Login failed.");
@@ -54,14 +57,5 @@ export default class CommentForm extends Vue {
 </script>
 
 <style scoped>
-  .card {
-    text-align: left;
-    border: 1px solid black;
-    border-radius: 3px;
-    margin: 3px;
-  }
 
-  .form-control {
-    width: 100%;
-  }
 </style>

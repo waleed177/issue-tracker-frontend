@@ -13,5 +13,5 @@ import LoginForm from '@/components/LoginForm.vue'
     LoginForm
   },
 })
-export default class Home extends Vue {}
+export default class Login extends Vue {}
 </script>

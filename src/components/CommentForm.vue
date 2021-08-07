@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div v-if="!noCard" class="card">
     <div class="card-header">
       Write a comment.
     </div>
@@ -11,6 +11,12 @@
     </div>
    
   </div>
+  <div v-else>
+    <textarea class="resize-vertical w-100" v-model="comment"/>
+    <div v-if="!noSubmit">
+      <input class="btn btn-outline-primary float-right" type="submit" value="submit" v-on:click="submit()"/>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -20,7 +26,8 @@ import { axios, set_token } from "@/globals/globals";
 @Options({
   props: {
     issueId: Number,
-    noSubmit: Boolean
+    noSubmit: Boolean,
+    noCard: Boolean
   },
   data() {
     return {

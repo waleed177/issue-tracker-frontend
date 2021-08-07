@@ -1,8 +1,12 @@
 <template>
-  <div>
-    Hello
-    <div v-for="project in projects" :key="project.id">
-      <router-link :to="'/projects/' + project.id">{{project.name}}</router-link> 
+  <div class="card">
+    <div class="card-header">
+      Projects
+    </div>
+    <div class="card-body">
+      <div v-for="project in projects" :key="project.id">
+        <router-link :to="'/projects/' + project.id">{{project.name}}</router-link> 
+      </div>
     </div>
   </div>
 </template>
