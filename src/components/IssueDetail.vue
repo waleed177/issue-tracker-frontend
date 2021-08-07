@@ -1,18 +1,26 @@
 <template>
-  <div>
-    <div class="card">
-      <span class="author">
-        {{author}}
-      </span>
-      <span class="title">
-        {{title}}
-      </span>
-
-      <comment v-for="comment in comments" :key="comment.id" :comment-data="comment"/>
+  <div class="row my-3">
+    <div class="col">
+      <div class="card">
+        <div class="card-header">
+          {{issue.title}}
+        </div>
+        <div class="card-body">
+          <div class="card-text text-muted">
+            {{issue.author.username}} opened this issue.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      
+      <comment class="mb-3" v-for="comment in comments" :key="comment.id" :comment-data="comment"/>
 
       <comment-form :issue-id="issueId" v-on:submit="onCommentSubmit"/>
     </div>
-    <div>
+    <div class="col-4">
       <LabelsEditor :issue-id="issueId" @change="refresh"/>
     </div>
   </div>
@@ -36,17 +44,27 @@ import LabelsEditor from "@/components/LabelsEditor.vue";
   },
   data() {
     return {
-      comments: []
+      comments: [],
+      issue: {
+        author: {
+          username: "..."
+        },
+        title: "..."
+      }
     }
   }
 })
 export default class IssueDetail extends Vue {
   comments!: [];
   issueId!: number;
+  issue!: any;
 
   async refresh() {
     let res = await axios.get("http://127.0.0.1:8000/tracker/comments/?issue=" + this.issueId);
     this.comments = res.data;
+
+    let issue = await axios.get("http://127.0.0.1:8000/tracker/issues/" + this.issueId + "/");
+    this.issue = issue.data;
   }
 
   async mounted() {
@@ -60,11 +78,5 @@ export default class IssueDetail extends Vue {
 </script>
 
 <style scoped>
-  .card {
-    text-align: left;
-    border: 1px solid black;
-    border-radius: 3px;
-    padding: 3px;
-  }
-  
+
 </style>

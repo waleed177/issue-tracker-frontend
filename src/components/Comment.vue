@@ -1,11 +1,15 @@
 <template>
   <div class="card">
-    <div class="author">
-      {{commentData.author.username}}
+    <div class="card-header">
+      {{commentData.author.username}} <span class="text-muted"> commented. </span>
     </div>
-    <div class="content">
-      {{commentData.body}}
+    <div class="card-body">
+      
+      <div class="card-text">
+        {{commentData.body}}
+      </div>
     </div>
+    
   </div>
 </template>
 
@@ -23,10 +27,5 @@ export default class Comment extends Vue {
 </script>
 
 <style scoped>
-  .card {
-    text-align: left;
-    border: 1px solid black;
-    border-radius: 3px;
-    margin: 3px;
-  }
+
 </style>

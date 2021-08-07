@@ -1,23 +1,37 @@
 <template>
   <div class="card">
-    <div v-for="label in labels" :key="label.id" class="labelDiv">
-      <IssueLabel 
-        :label="label.name"
-        :color="label.color" 
-        :startingState="label.on"
-        :label-id="label.id" 
-        :issue="issueId"
-        @toggle="issueLabelToggle"/>
-    </div>
+    <div class="card-body">
+      <button class="btn btn-outline-primary w-100" @click="labelAdder = !labelAdder"> 
+        <div v-if="labelAdder">
+          labels ^
+        </div>
+        <div v-else>
+          labels v
+        </div>
+      </button>
 
-    <div style="margin-top: 20px">
-      <IssueLabel v-for="label in currentLabels" :key="label.id"
-        :label="label.name"
-        :color="label.color" 
-        :startingState="label.on"
-        :label-id="label.id" 
-        :issue="issueId"
-        @toggle="issueLabelToggle"/>
+      <div v-if="labelAdder" class="rounded-bottom border border-primary">
+        <div v-for="label in labels" :key="label.id">
+          <IssueLabel 
+            :label="label.name"
+            :color="label.color" 
+            :startingState="label.on"
+            :label-id="label.id" 
+            :issue="issueId"
+            @toggle="issueLabelToggle"/>
+        </div>
+      </div>
+      
+
+      <div style="margin-top: 20px">
+        <IssueLabel v-for="label in currentLabels" :key="label.id"
+          :label="label.name"
+          :color="label.color" 
+          :startingState="label.on"
+          :label-id="label.id" 
+          :issue="issueId"
+          @toggle="issueLabelToggle"/>
+      </div>
     </div>
   </div>
 </template>
@@ -29,15 +43,16 @@ import IssueLabel from "@/components/IssueLabel.vue";
 
 @Options({
   props: {
-    issueId: Number
+    issueId: Number,
   },
   components: {
     IssueLabel
   },
   data() {
     return {
-      labels: Array,
-      currentLabels: Array,
+      labels: [],
+      currentLabels: [],
+      labelAdder: false
     }
   },
   emits: []
@@ -85,7 +100,8 @@ export default class LabelsEditor extends Vue {
 </script>
 
 <style scoped>
-  .labelDiv {
-    margin-top: 5px;
+  .labelAdder {
+    background-color: rgb(218, 218, 218);
+    padding: 10px;
   }
 </style>
