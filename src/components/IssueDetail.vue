@@ -7,7 +7,7 @@
         </div>
         <div class="card-body">
           <div class="card-text text-muted">
-            {{issue.author.username}} opened this issue.
+            {{issue.author.username}} opened this issue at {{creationDate}}
           </div>
         </div>
       </div>
@@ -32,6 +32,7 @@ import Comment from '@/components/Comment.vue';
 import CommentForm from '@/components/CommentForm.vue';
 import { axios } from "@/globals/globals";
 import LabelsEditor from "@/components/LabelsEditor.vue";
+import { format_django_date } from "@/globals/date";
 
 @Options({
   props: {
@@ -50,7 +51,8 @@ import LabelsEditor from "@/components/LabelsEditor.vue";
           username: "..."
         },
         title: "..."
-      }
+      },
+      creationDate: ""
     }
   }
 })
@@ -58,6 +60,7 @@ export default class IssueDetail extends Vue {
   comments!: [];
   issueId!: number;
   issue!: any;
+  creationDate!: string;
 
   async refresh() {
     let res = await axios.get("http://127.0.0.1:8000/tracker/comments/?issue=" + this.issueId);
@@ -65,6 +68,8 @@ export default class IssueDetail extends Vue {
 
     let issue = await axios.get("http://127.0.0.1:8000/tracker/issues/" + this.issueId + "/");
     this.issue = issue.data;
+
+    this.creationDate = format_django_date(this.issue.creation_date);
   }
 
   async mounted() {
