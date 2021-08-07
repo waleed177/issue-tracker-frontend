@@ -1,15 +1,20 @@
 <template>
-  <div class="card">
-    <span class="author">
-      {{author}}
-    </span>
-    <span class="title">
-      {{title}}
-    </span>
+  <div>
+    <div class="card">
+      <span class="author">
+        {{author}}
+      </span>
+      <span class="title">
+        {{title}}
+      </span>
 
-    <comment v-for="comment in comments" :key="comment.id" :comment-data="comment"/>
+      <comment v-for="comment in comments" :key="comment.id" :comment-data="comment"/>
 
-    <comment-form :issue-id="issueId" v-on:submit="onCommentSubmit"/>
+      <comment-form :issue-id="issueId" v-on:submit="onCommentSubmit"/>
+    </div>
+    <div>
+      <LabelsEditor :issue-id="issueId" @change="refresh"/>
+    </div>
   </div>
 </template>
 
@@ -18,6 +23,7 @@ import { Options, Vue } from 'vue-class-component';
 import Comment from '@/components/Comment.vue';
 import CommentForm from '@/components/CommentForm.vue';
 import { axios } from "@/globals/globals";
+import LabelsEditor from "@/components/LabelsEditor.vue";
 
 @Options({
   props: {
@@ -25,7 +31,8 @@ import { axios } from "@/globals/globals";
   },
   components: {
     Comment,
-    CommentForm
+    CommentForm,
+    LabelsEditor,
   },
   data() {
     return {

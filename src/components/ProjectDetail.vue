@@ -1,8 +1,13 @@
 <template>
   <div>
-    Issues:
-    <IssueForm :project-id="projectId"/>
-    <Issue v-for="issue in issues" :key="issue" :issue="issue"/>
+    <div>
+      Issues:
+      <IssueForm :project-id="projectId"/>
+      <Issue v-for="issue in issues" :key="issue" :issue="issue"/>
+    </div>
+    <div>
+      
+    </div>
   </div>
 </template>
 
@@ -15,7 +20,7 @@ import { axios } from '@/globals/globals';
 @Options({
   components: {
     Issue,
-    IssueForm
+    IssueForm,
   },
   props: {
     projectId: Number
