@@ -6,7 +6,7 @@
         color: textColor
       }"
       v-on:click="click">
-    <input type="checkbox" ref="checkbox"/>
+    <input v-if="!noCheck" type="checkbox" ref="checkbox"/>
     {{label}}
   </div>
 </template>
@@ -38,6 +38,7 @@ function hexToRgb(hex: string) {
     color: String,
     labelId: Number,
     startingState: Boolean,
+    noCheck: Boolean
   },
   data() {
     return {
@@ -56,10 +57,13 @@ export default class IssueLabel extends Vue {
   startingState!: boolean;
   border!: string;
   textColor!: string;
+  noCheck!: boolean;
 
   mounted() {
     this.on = this.startingState;
-    (this.$refs.checkbox as any).checked = this.on;
+
+    if(!this.noCheck)
+      (this.$refs.checkbox as any).checked = this.on;
 
     //'1px solid black'
     var color = hexToRgb(this.color);
@@ -76,7 +80,8 @@ export default class IssueLabel extends Vue {
 
   click() {
     this.on = !this.on;
-    (this.$refs.checkbox as any).checked = this.on;
+    if(!this.noCheck)
+      (this.$refs.checkbox as any).checked = this.on;
     this.$emit("toggle", this.labelId, this.on);
   }
 }

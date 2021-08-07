@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
       <CommentForm ref="comment_form" :issue-id="issueId" :no-card="true" no-submit="true"/>
-      <input class="btn btn-outline-primary mt-2 float-right" type="submit" value="submit" v-on:click="submit"/>
+      <input class="btn btn-outline-primary mt-2 float-right" type="submit" value="Submit Issue" v-on:click="submit"/>
     </div>
   </div>
 </template>
