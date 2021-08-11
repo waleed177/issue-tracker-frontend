@@ -4,7 +4,12 @@
       <router-link :to="'/issues/' + issue.id">{{issue.title}}</router-link> 
     </div>
     <div class="card-body text-muted py-0">
-      opened by {{issue.author.username}} at {{creationDate}}. 
+      <div v-if="issue.author != null">
+        opened by {{issue.author.username}} at {{creationDate}}. 
+      </div>
+      <div v-else>
+        opened by {{issue.guest_name}} at {{creationDate}}.
+      </div>
       <IssueLabel v-for="label in issue.labels" :key="label.id"
           :label="label.name"
           :color="label.color" 

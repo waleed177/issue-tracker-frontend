@@ -1,7 +1,10 @@
 <template>
   <div class="card">
-    <div class="card-header">
+    <div v-if="commentData.author != null" class="card-header">
       {{commentData.author.username}} <span class="text-muted"> commented at {{creationDate}} </span>
+    </div>
+    <div v-else class="card-header">
+      {{commentData.guest_name}} <span class="text-muted"> commented at {{creationDate}} </span>
     </div>
     <div class="card-body">
       

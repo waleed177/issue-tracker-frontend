@@ -6,8 +6,11 @@
           {{issue.title}}
         </div>
         <div class="card-body">
-          <div class="card-text text-muted">
+          <div v-if="issue.author != null" class="card-text text-muted">
             {{issue.author.username}} opened this issue at {{creationDate}}
+          </div>
+          <div v-else class="card-text text-muted">
+            {{issue.guest_name}} opened this issue at {{creationDate}}
           </div>
         </div>
       </div>
