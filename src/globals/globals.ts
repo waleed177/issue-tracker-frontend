@@ -30,3 +30,8 @@ export function set_token(token: string) {
 export function isLoggedIn() {
     return localStorage.getItem("token") != null;
 }
+
+export function logout() {
+    localStorage.removeItem("token");
+    return true;
+}
