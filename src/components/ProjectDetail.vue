@@ -9,7 +9,10 @@
       </router-link>
     </div>
     <div class="card-body">
-      <Issue v-for="issue in issues" :key="issue" :issue="issue"/>
+      <Issue v-for="issue in issues" 
+        :key="issue" 
+        :issue="issue" 
+        :showPublicityModifier='showPublicityModifier'/>
     </div>
   </div>
 </template>
@@ -24,7 +27,8 @@ import { axios } from '@/globals/globals';
     Issue,
   },
   props: {
-    projectId: Number
+    projectId: Number,
+    showPublicityModifier: Boolean
   },
   data() {
     return {
@@ -36,7 +40,8 @@ import { axios } from '@/globals/globals';
 export default class ProjectDetail extends Vue {
   issues!: []
   projectId!: number;
-
+  showPublicityModifier!: boolean;
+  
   async mounted() {
 
     let res = await axios.get("http://127.0.0.1:8000/tracker/issues/?project=" + this.projectId);

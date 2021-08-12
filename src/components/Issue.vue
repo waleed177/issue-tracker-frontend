@@ -1,22 +1,28 @@
 <template>
   <div class="card my-3">
     <div class="card-header">
-      <router-link :to="'/issues/' + issue.id">{{issue.title}}</router-link> 
+      <router-link :to="'/issues/' + issue_data.id">{{issue_data.title}}</router-link> 
+      <div v-if="showPublicityModifier && issue_data.can_modify_publicity" class="float-right">
+        <input type="button"
+          :class="publicityButtonClass" 
+          :value="publicityButtonLabel" 
+          @click="togglePublic"/>
+      </div>
     </div>
     <div class="card-body text-muted py-0">
-      <div v-if="issue.author != null">
-        opened by {{issue.author.username}} at {{creationDate}}. 
+      <div v-if="issue_data.author != null">
+        opened by {{issue_data.author.username}} at {{creationDate}}. 
       </div>
       <div v-else>
-        opened by {{issue.guest_name}} at {{creationDate}}.
+        opened by {{issue_data.guest_name}} at {{creationDate}}.
       </div>
-      <IssueLabel v-for="label in issue.labels" :key="label.id"
+      <IssueLabel v-for="label in issue_data.labels" :key="label.id"
           :label="label.name"
           :color="label.color" 
           :startingState="label.on"
           :label-id="label.id" 
           :no-check="true"
-          :issue="issue.id"/>
+          :issue="issue_data.id"/>
     </div>
   </div>
 </template>
@@ -29,23 +35,54 @@ import IssueLabel from "@/components/IssueLabel.vue";
 
 @Options({
   props: {
-    issue: Object
+    issue: Object,
+    showPublicityModifier: Boolean
   },
   components: {
     IssueLabel
   },
   data() {
     return {
-      creationDate: ""
+      creationDate: "",
+      publicityButtonLabel: "Make Public",
+      issue_data: {},
+      publicityButtonClass: {
+        'btn': true,
+        'btn-outline-success': true,
+        'btn-outline-danger': false 
+      }
     }
   }
 })
 export default class IssueDetail extends Vue {
   issue!: any;
+  issue_data!: any;
   creationDate!: string;
+  publicityButtonLabel!: string;
+  publicityButtonClass!: any;
 
   mounted() {
     this.creationDate = format_django_date(this.issue.creation_date);
+    this.issue_data = this.issue;
+    this.refresh();
+  }
+
+  refresh() {
+    if(this.issue_data.publicity == 1) {
+      this.publicityButtonLabel = "Make Private";
+      this.publicityButtonClass['btn-outline-success'] = false;
+      this.publicityButtonClass['btn-outline-danger'] = true;
+    } else {
+      this.publicityButtonLabel = "Make Public";
+      this.publicityButtonClass['btn-outline-success'] = true;
+      this.publicityButtonClass['btn-outline-danger'] = false;
+    }
+  }
+
+  async togglePublic() {
+    let res = await axios.post("http://127.0.0.1:8000/tracker/issues/" + this.issue_data.id + "/toggle_publicity/");
+    this.issue_data = res.data;
+    this.refresh();
   }
 }
 </script>

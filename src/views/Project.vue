@@ -1,6 +1,8 @@
 <template>
   <div>
-    <ProjectDetail :project-id="$route.params.id"/>
+    <ProjectDetail 
+      :project-id="$route.params.id"
+      :showPublicityModifier="true"/>
   </div>
 </template>
 
