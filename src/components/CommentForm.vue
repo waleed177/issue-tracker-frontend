@@ -10,7 +10,17 @@
       <textarea class="resize-vertical w-100" v-model="comment"/>
       <div v-if="!noSubmit">
         <input class="btn btn-outline-primary float-right" type="submit" value="Submit" v-on:click="submit()"/>
-        <input class="btn btn-outline-danger float-right mr-1" type="submit" value="Close Issue" v-on:click="closeIssue()"/>
+        <input 
+          :class="{
+            'btn': true,
+            'btn-outline-danger': issue.is_open,
+            'btn-outline-success': !issue.is_open,
+            'float-right': true,
+            'mr-1': true
+          }" 
+          type="submit" 
+          :value="issueOpenCloseLabel" 
+          v-on:click="toggleIssue()"/>
       </div>
     </div>
    
@@ -36,7 +46,9 @@ import { axios, set_token } from "@/globals/globals";
   data() {
     return {
       comment: "",
-      guestName: ""
+      guestName: "",
+      issueOpenCloseLabel: "Close Issue",
+      issue: {}
     }
   },
   emits: ["submit"]
@@ -46,6 +58,19 @@ export default class CommentForm extends Vue {
   issueId!: number;
   noSubmit!: boolean;
   guestName!: string;
+  issue!: any;
+  issueOpenCloseLabel!: string;
+
+  async mounted() {
+    let issue = await axios.get("http://127.0.0.1:8000/tracker/issues/" + this.issueId + "/");
+    this.issue = issue.data;
+
+    this.refresh();
+  }
+
+  async refresh() {
+    this.issueOpenCloseLabel = this.issue.is_open ? "Close Issue" : "Open Issue";
+  }
 
   public async submit(issueId: number | null = null, guestName: string | null = null) {
     let id: number = issueId == null ? this.issueId : issueId;
@@ -60,10 +85,13 @@ export default class CommentForm extends Vue {
     this.$emit("submit");
   }
 
-  public async closeIssue() {
-    await axios.post("http://127.0.0.1:8000/tracker/issues/" + this.issueId + "/close_or_open/", {
-      "open": false
+  public async toggleIssue() {
+    let res = await axios.post("http://127.0.0.1:8000/tracker/issues/" + this.issueId + "/close_or_open/", {
+      "open": !this.issue.is_open
     });
+    this.issue = res.data;
+    this.$emit("submit");
+    this.refresh();
   }
 }
 </script>
