@@ -24,7 +24,7 @@
             </button>
             <p> Currently showing: {{showPublicityType}} issues. </p>
           </div>
-
+          <SearchBar @submit="search"/>
           <Issue v-for="issue in issues" 
             :key="issue" 
             :issue="issue" 
@@ -58,10 +58,13 @@ import { Options, Vue } from 'vue-class-component';
 import Issue from '@/components/Issue.vue';
 import { axios } from '@/globals/globals';
 import IssueLabel from '@/components/IssueLabel.vue'
+import SearchBar from '@/components/SearchBar.vue';
+
 @Options({
   components: {
     Issue,
-    IssueLabel
+    IssueLabel,
+    SearchBar
   },
   props: {
     projectId: Number,
@@ -74,6 +77,7 @@ import IssueLabel from '@/components/IssueLabel.vue'
       query: "",
       showPublicityType: "all",
       labels: [],
+      searchQuery: ""
     }
   }
 })
@@ -86,6 +90,7 @@ export default class ProjectDetail extends Vue {
   showPublicityType!: string;
   showPublicityFilters!: boolean;
   labels!: Array<any>;
+  searchQuery!: string;
 
   async mounted() {
     let labels = await axios.get("http://127.0.0.1:8000/tracker/issue_labels/");
@@ -117,7 +122,13 @@ export default class ProjectDetail extends Vue {
       }
     });
     labels = labels.substring(0, labels.length-1);
-    this.query += "labels=" + labels + "&";
+
+    if (labels != "")
+      this.query += "labels=" + labels + "&";
+
+    if (this.searchQuery.trim() != "") {
+      this.query += "query=" + encodeURIComponent(this.searchQuery) + "&";
+    }
 
     this.refresh();
   }
@@ -128,13 +139,18 @@ export default class ProjectDetail extends Vue {
   }
 
   async issueLabelToggle(id: number, on: boolean) {
-    
+
     this.labels.forEach((label: any, key: number) => {
       if(label.id == id) {
         this.labels[key].on = on;
       }
     });
     
+    this.updateQuery();
+  }
+  
+  async search(searchQuery: string) {
+    this.searchQuery = searchQuery;
     this.updateQuery();
   }
 
