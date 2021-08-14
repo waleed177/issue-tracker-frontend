@@ -1,4 +1,9 @@
 import Axios, { AxiosInstance } from "axios";
+import { reactive } from "vue";
+
+export const global_state = reactive({
+    isLoggedIn: false
+});
 
 export let axios: AxiosInstance;
 const common: {"Content-Type": string, Authorization?: string} = {
@@ -25,6 +30,7 @@ export function set_token(token: string) {
         }
     })
     localStorage.setItem("token", token);
+    global_state.isLoggedIn = true;
 }
 
 export function isLoggedIn() {
@@ -33,5 +39,8 @@ export function isLoggedIn() {
 
 export function logout() {
     localStorage.removeItem("token");
+    global_state.isLoggedIn = false;
     return true;
 }
+
+global_state.isLoggedIn = isLoggedIn();

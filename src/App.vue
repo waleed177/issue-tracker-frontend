@@ -12,7 +12,7 @@
       </div>
       <ul class="nav navbar-nav navbar-right">
         <li>
-          <router-link v-if="!isLoggedIn" to="/login">
+          <router-link v-if="!global_state.isLoggedIn" to="/login">
             <button class="btn btn-outline-success">
               Login
             </button>
@@ -33,14 +33,14 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { axios, isLoggedIn, logout } from '@/globals/globals';
+import { axios, global_state, isLoggedIn, logout } from '@/globals/globals';
 import { computed } from '@vue/runtime-core';
 
 @Options({
   data() {
     return {
       project: {},
-      isLoggedIn: false
+      global_state: global_state
     }
   }
 })
@@ -49,14 +49,8 @@ export default class App extends Vue {
   project!: any;
   isLoggedIn!: boolean;
 
-  async mounted() {
-    this.isLoggedIn = isLoggedIn();
-  }
-
   logout() {
-    if(logout()) {
-      this.isLoggedIn = false;
-    }
+    logout();
   }
 }
 

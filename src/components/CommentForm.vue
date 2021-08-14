@@ -4,8 +4,10 @@
       Write a comment.
     </div>
     <div class="card-body">
-      Nickname:
-      <input type="text" class="resize-vertical w-100" v-model="guestName"/>
+      <div v-if="!global_state.isLoggedIn">
+         Nickname:
+        <input type="text" class="resize-vertical w-100" v-model="guestName"/>
+      </div>
       Comment:
       <textarea class="resize-vertical w-100" v-model="comment"/>
       <div v-if="!noSubmit">
@@ -35,7 +37,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { axios, set_token } from "@/globals/globals";
+import { axios, global_state, isLoggedIn, set_token } from "@/globals/globals";
 
 @Options({
   props: {
@@ -48,7 +50,8 @@ import { axios, set_token } from "@/globals/globals";
       comment: "",
       guestName: "",
       issueOpenCloseLabel: "Close Issue",
-      issue: {}
+      issue: {},
+      global_state: global_state
     }
   },
   emits: ["submit"]
@@ -64,7 +67,6 @@ export default class CommentForm extends Vue {
   async mounted() {
     let issue = await axios.get("http://127.0.0.1:8000/tracker/issues/" + this.issueId + "/");
     this.issue = issue.data;
-
     this.refresh();
   }
 
