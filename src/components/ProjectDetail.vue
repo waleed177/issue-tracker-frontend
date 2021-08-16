@@ -25,10 +25,15 @@
             <p> Currently showing: {{showPublicityType}} issues. </p>
           </div>
           <SearchBar @submit="search"/>
-          <Issue v-for="issue in issues" 
+          <Issue v-for="issue in issues.results" 
             :key="issue" 
             :issue="issue" 
             :showPublicityModifier='showPublicityModifier'/>
+          <Pagination 
+            :pageSize="5" 
+            ref="pagination" 
+            class="text-center"
+            @changed="pageChanged"/>
         </div>
       </div>
     </div>
@@ -46,6 +51,11 @@
               :label-id="label.id" 
               @toggle="issueLabelToggle"/>
           </div>
+          <IssueLabel 
+            label="Unlabelled"
+            color="#0f0f0f" 
+            :startingState="true"
+            @toggle="unlabelledToggle"/>
         </div>
       </div>
     </div>
@@ -59,12 +69,14 @@ import Issue from '@/components/Issue.vue';
 import { axios } from '@/globals/globals';
 import IssueLabel from '@/components/IssueLabel.vue'
 import SearchBar from '@/components/SearchBar.vue';
+import Pagination from '@/components/Pagination.vue';
 
 @Options({
   components: {
     Issue,
     IssueLabel,
-    SearchBar
+    SearchBar,
+    Pagination
   },
   props: {
     projectId: Number,
@@ -73,17 +85,18 @@ import SearchBar from '@/components/SearchBar.vue';
   },
   data() {
     return {
-      issues: [],
+      issues: {},
       query: "",
       showPublicityType: "all",
       labels: [],
-      searchQuery: ""
+      searchQuery: "",
+      include_unlabelled: true
     }
   }
 })
 
 export default class ProjectDetail extends Vue {
-  issues!: []
+  issues!: any;
   projectId!: number;
   showPublicityModifier!: boolean;
   query!: string;
@@ -91,6 +104,8 @@ export default class ProjectDetail extends Vue {
   showPublicityFilters!: boolean;
   labels!: Array<any>;
   searchQuery!: string;
+  pageNumber!: number;
+  include_unlabelled!: boolean;
 
   async mounted() {
     let labels = await axios.get("http://127.0.0.1:8000/tracker/issue_labels/");
@@ -99,12 +114,24 @@ export default class ProjectDetail extends Vue {
     this.labels.forEach((element: any) => {
       element.on = true;
     });
-    this.refresh();
+
+    await this.refresh();
+
+    let pagination = (this.$refs.pagination as any);
+    pagination.changePage(1);
+
+
   }
 
   async refresh() {
-    let res = await axios.get("http://127.0.0.1:8000/tracker/issues/?project=" + this.projectId + "&" + this.query);
+    let res = await axios.get(
+      "http://127.0.0.1:8000/tracker/issues/?project=" + this.projectId
+      + "&" + this.query
+    );
     this.issues = res.data;
+    let pagination = (this.$refs.pagination as any);
+    pagination.paginationData = this.issues;
+    pagination.refresh();
   }
 
   async updateQuery() {
@@ -123,12 +150,16 @@ export default class ProjectDetail extends Vue {
     });
     labels = labels.substring(0, labels.length-1);
 
-    if (labels != "")
-      this.query += "labels=" + labels + "&";
+    this.query += "labels=" + labels + "&";
+
+    if (this.include_unlabelled)
+      this.query += "include_unlabelled=1&";
 
     if (this.searchQuery.trim() != "") {
       this.query += "query=" + encodeURIComponent(this.searchQuery) + "&";
     }
+
+    this.query += "page=" + this.pageNumber + "&";
 
     this.refresh();
   }
@@ -148,9 +179,19 @@ export default class ProjectDetail extends Vue {
     
     this.updateQuery();
   }
+
+  unlabelledToggle(id: number, on: boolean) {
+    this.include_unlabelled = on;
+    this.updateQuery();
+  }
   
   async search(searchQuery: string) {
     this.searchQuery = searchQuery;
+    this.updateQuery();
+  }
+
+  pageChanged(pageNumber: number) {
+    this.pageNumber = pageNumber;
     this.updateQuery();
   }
 

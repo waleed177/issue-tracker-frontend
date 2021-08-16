@@ -33,7 +33,7 @@ export default class Projects extends Vue {
   async mounted() {
 
     let res = await axios.get("http://127.0.0.1:8000/tracker/projects/");
-    this.projects = res.data;
+    this.projects = res.data.results;
 
   }
 

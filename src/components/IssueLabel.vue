@@ -32,6 +32,7 @@ function hexToRgb(hex: string) {
   } : null;
 }
 
+
 @Options({
   props: {
     label: String,

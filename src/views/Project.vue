@@ -30,7 +30,7 @@ export default class Project extends Vue {
 
     let res = await axios.get("http://127.0.0.1:8000/tracker/projects/" + this.$route.params.id + "/");
     this.project = res.data;
-    console.log(this.project);
+
   }
 }
 
