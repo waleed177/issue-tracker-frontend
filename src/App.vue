@@ -28,6 +28,10 @@
   <div class="container">
     <router-view/>
   </div>
+
+  <div class="jumbotron text-center mt-3">
+    <router-link to="/legal">Legal</router-link>
+  </div>
 </template>
 
 
