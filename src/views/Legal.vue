@@ -59,6 +59,35 @@ https://github.com/waleed177/issue-tracker-frontend
 </a>
     </div>
   </div>
+  <div class="card my-3">
+    <div class="card-header">
+      The Backend's License.
+    </div>
+    <div class="card-body">
+<pre>
+This is the server-side of the issue-tracker software.
+Copyright (C) 2021 waleed177 &lt;potatoxel@gmail.com&gt;
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, version 3 of the
+License only.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+</pre>
+
+You can acquire the source code here:
+<a href="https://github.com/waleed177/issue-tracker-server">
+https://github.com/waleed177/issue-tracker-server
+</a>
+    </div>
+  </div>
   <div class="card">
     <div class="card-header">
       3rd Party Licenses
