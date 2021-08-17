@@ -58,7 +58,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { axios } from "@/globals/globals";
+import { axios, getAPIPath } from "@/globals/globals";
 import IssueLabel from "@/components/IssueLabel.vue";
 
 @Options({
@@ -83,9 +83,9 @@ export default class LabelsEditor extends Vue {
   currentLabels!: Array<any>;
 
   async refresh() {
-    let res = await axios.get("http://127.0.0.1:8000/tracker/issue_labels/");
+    let res = await axios.get(getAPIPath("tracker/issue_labels/"));
     
-    let currentLabels = await axios.get("http://127.0.0.1:8000/tracker/issues/" + this.issueId + "/");
+    let currentLabels = await axios.get(getAPIPath("tracker/issues/" + this.issueId + "/"));
     currentLabels.data.labels.forEach((current: any) => {
       current.on = true;
     });
@@ -108,7 +108,7 @@ export default class LabelsEditor extends Vue {
   }
 
   async issueLabelToggle(id: number, on: boolean) {
-    let res = await axios.post("http://127.0.0.1:8000/tracker/issues/set_label/", {
+    let res = await axios.post(getAPIPath("tracker/issues/set_label/"), {
       issue: this.issueId,
       label: id,
       on: on

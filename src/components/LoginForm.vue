@@ -38,7 +38,7 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import router from '@/router';
-import { axios, set_token } from "@/globals/globals";
+import { axios, getAPIPath, set_token } from "@/globals/globals";
 
 @Options({
   props: {},
@@ -56,7 +56,7 @@ export default class CommentForm extends Vue {
   public async login() {
     try {
 
-      let res = await axios.post("http://127.0.0.1:8000/tracker/token-auth/", {
+      let res = await axios.post(getAPIPath("tracker/token-auth/"), {
         "username": this.username,
         "password": this.password
       });

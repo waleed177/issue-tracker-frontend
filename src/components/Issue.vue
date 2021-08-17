@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { axios } from "@/globals/globals";
+import { axios, getAPIPath } from "@/globals/globals";
 import { format_django_date } from "@/globals/date";
 import IssueLabel from "@/components/IssueLabel.vue";
 
@@ -100,7 +100,7 @@ export default class IssueDetail extends Vue {
   }
 
   async togglePublic() {
-    let res = await axios.post("http://127.0.0.1:8000/tracker/issues/" + this.issue_data.id + "/toggle_publicity/");
+    let res = await axios.post(getAPIPath("tracker/issues/" + this.issue_data.id + "/toggle_publicity/"));
     this.issue_data = res.data;
     this.refresh();
   }

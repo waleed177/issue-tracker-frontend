@@ -30,7 +30,7 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import ProjectDetail from '@/components/ProjectDetail.vue';
-import { axios } from '@/globals/globals';
+import { axios, getAPIPath } from '@/globals/globals';
 
 @Options({
   components: {
@@ -48,7 +48,7 @@ export default class Project extends Vue {
 
   async mounted() {
 
-    let res = await axios.get("http://127.0.0.1:8000/tracker/projects/" + this.$route.params.id + "/");
+    let res = await axios.get(getAPIPath("tracker/projects/" + this.$route.params.id + "/"));
     this.project = res.data;
 
   }

@@ -23,6 +23,11 @@ export const global_state = reactive({
     isLoggedIn: false
 });
 
+const apiBase = "http://127.0.0.1:8000/";
+export function getAPIPath(path: string) {
+    return apiBase + path;
+}
+
 export let axios: AxiosInstance;
 const common: {"Content-Type": string, Authorization?: string} = {
     "Content-Type": "application/json"

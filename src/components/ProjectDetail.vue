@@ -86,7 +86,7 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import Issue from '@/components/Issue.vue';
-import { axios } from '@/globals/globals';
+import { axios, getAPIPath } from '@/globals/globals';
 import IssueLabel from '@/components/IssueLabel.vue'
 import SearchBar from '@/components/SearchBar.vue';
 import Pagination from '@/components/Pagination.vue';
@@ -128,7 +128,7 @@ export default class ProjectDetail extends Vue {
   include_unlabelled!: boolean;
 
   async mounted() {
-    let labels = await axios.get("http://127.0.0.1:8000/tracker/issue_labels/");
+    let labels = await axios.get(getAPIPath("tracker/issue_labels/"));
     this.labels = labels.data;
 
     this.labels.forEach((element: any) => {
@@ -145,8 +145,8 @@ export default class ProjectDetail extends Vue {
 
   async refresh() {
     let res = await axios.get(
-      "http://127.0.0.1:8000/tracker/issues/?project=" + this.projectId
-      + "&" + this.query
+      getAPIPath("tracker/issues/?project=" + this.projectId
+      + "&" + this.query)
     );
     this.issues = res.data;
     let pagination = (this.$refs.pagination as any);

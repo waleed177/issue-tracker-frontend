@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { axios, isLoggedIn, set_token } from "@/globals/globals";
+import { axios, getAPIPath, isLoggedIn, set_token } from "@/globals/globals";
 import CommentForm from "@/components/CommentForm.vue";
 
 @Options({
@@ -68,7 +68,7 @@ export default class IssueForm extends Vue {
   }
 
   public async submit() {
-    let res = await axios.post("http://127.0.0.1:8000/tracker/issues/?project=" + this.projectId, {
+    let res = await axios.post(getAPIPath("tracker/issues/?project=" + this.projectId), {
         "title": this.title,
         "project": this.projectId,
         "guest_name": this.guestName

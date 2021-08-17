@@ -57,7 +57,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { axios, global_state, isLoggedIn, set_token } from "@/globals/globals";
+import { axios, getAPIPath, global_state, isLoggedIn, set_token } from "@/globals/globals";
 
 @Options({
   props: {
@@ -85,7 +85,7 @@ export default class CommentForm extends Vue {
   issueOpenCloseLabel!: string;
 
   async mounted() {
-    let issue = await axios.get("http://127.0.0.1:8000/tracker/issues/" + this.issueId + "/");
+    let issue = await axios.get(getAPIPath("tracker/issues/" + this.issueId + "/"));
     this.issue = issue.data;
     this.refresh();
   }
@@ -98,7 +98,7 @@ export default class CommentForm extends Vue {
     let id: number = issueId == null ? this.issueId : issueId;
     let name: string = guestName == null ? this.guestName : guestName;
 
-    let res = await axios.post("http://127.0.0.1:8000/tracker/comments/?issue=" + id, {
+    let res = await axios.post(getAPIPath("tracker/comments/?issue=" + id), {
         "body": this.comment,
         "issue": id,
         "guest_name": name
@@ -108,7 +108,7 @@ export default class CommentForm extends Vue {
   }
 
   public async toggleIssue() {
-    let res = await axios.post("http://127.0.0.1:8000/tracker/issues/" + this.issueId + "/close_or_open/", {
+    let res = await axios.post(getAPIPath("tracker/issues/" + this.issueId + "/close_or_open/"), {
       "open": !this.issue.is_open
     });
     this.issue = res.data;
